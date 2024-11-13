@@ -6,7 +6,7 @@ import toast from "react-hot-toast";
 import { axiosInstance } from "../../config/axiosInstance";
 import { saveUser } from "../../redux/features/userSlice.js";
 
-export const AdminLoginPa = () => {
+export const AdminLogin = () => {
     const { register, handleSubmit } = useForm();
     const navigate = useNavigate();
     const dispatch = useDispatch();
