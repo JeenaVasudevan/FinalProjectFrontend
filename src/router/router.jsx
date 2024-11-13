@@ -110,11 +110,11 @@ export const router = createBrowserRouter([
           path:"/admin/signup",
           element:<SignupPage />
         },
-        {
+        /*{
           path:"/admin/login",
           element:<AdminLogin />
         },
-        /*{
+        {
           path:"/admin",
           element: <ProtectRoute />,
           children:[

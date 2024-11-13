@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+/*import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { FaUser, FaSignOutAlt, FaBars, FaTimes, FaClipboardList, FaHome, FaList } from 'react-icons/fa';
 import { DarkMode } from "../shared/DarkMode"; // Assuming you have a DarkMode component
@@ -29,8 +29,6 @@ export const AdminHeader = () => {
   return (
     <header className="bg-gray-800 text-white px-6 py-4 flex items-center justify-between shadow-lg relative">
       <Link to="/admin" className="text-2xl font-bold text-yellow-400">Zestora Admin</Link>
-
-      {/* Desktop Navigation */}
       <nav className="hidden md:flex space-x-8 items-center">
         <Link to="/admin/dashboard" className="hover:text-yellow-400">Dashboard</Link>
         <Link to="/admin/orders" className="hover:text-yellow-400">Orders</Link>
@@ -38,12 +36,10 @@ export const AdminHeader = () => {
         <Link to="/admin/menu" className="hover:text-yellow-400">Menu</Link>
       </nav>
 
-      {/* Mobile Menu Icon */}
       <button onClick={toggleMobileMenu} className="md:hidden text-white focus:outline-none" aria-label="Toggle menu">
         {isMobileMenuOpen ? <FaTimes /> : <FaBars />}
       </button>
 
-      {/* Mobile Navigation Menu */}
       {isMobileMenuOpen && (
         <div className="md:hidden absolute top-16 left-0 w-full bg-gray-800 text-white py-4 space-y-4 px-6 z-10">
           <Link to="/admin/dashboard" onClick={toggleMobileMenu} className="block hover:text-yellow-400">Dashboard</Link>
@@ -76,10 +72,8 @@ export const AdminHeader = () => {
           )}
         </div>
       )}
-
-      {/* Desktop Links based on login status */}
       <div className="hidden md:flex items-center space-x-4">
-        <DarkMode /> {/* Dark Mode toggle */}
+        <DarkMode /> 
         {isLoggedIn ? (
           <>
             <Link to="/admin/orders" className="hover:text-yellow-400 flex items-center">
@@ -106,3 +100,4 @@ export const AdminHeader = () => {
     </header>
   );
 };
+*/

@@ -1,10 +1,10 @@
-import React from 'react';
+/*import React from 'react';
 
 export const Footer = () => {
   return (
     <footer className="bg-gray-800 text-white py-10 px-4 md:px-10">
       <div className="container mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-        {/* Services Section */}
+    
         <nav>
           <h6 className="text-xl font-semibold text-yellow-400 mb-4">Services</h6>
           <a className="block text-base hover:text-yellow-400 mb-2">Branding</a>
@@ -13,7 +13,6 @@ export const Footer = () => {
           <a className="block text-base hover:text-yellow-400 mb-2">Advertisement</a>
         </nav>
 
-        {/* Company Section */}
         <nav>
           <h6 className="text-xl font-semibold text-yellow-400 mb-4">Company</h6>
           <a className="block text-base hover:text-yellow-400 mb-2">About us</a>
@@ -22,7 +21,7 @@ export const Footer = () => {
           <a className="block text-base hover:text-yellow-400 mb-2">Press kit</a>
         </nav>
 
-        {/* Legal Section */}
+
         <nav>
           <h6 className="text-xl font-semibold text-yellow-400 mb-4">Legal</h6>
           <a className="block text-base hover:text-yellow-400 mb-2">Terms of use</a>
@@ -30,7 +29,7 @@ export const Footer = () => {
           <a className="block text-base hover:text-yellow-400 mb-2">Cookie policy</a>
         </nav>
 
-        {/* Newsletter Section */}
+
         <form>
           <h6 className="text-xl font-semibold text-yellow-400 mb-4">Newsletter</h6>
           <fieldset className="form-control">
@@ -59,3 +58,4 @@ export const Footer = () => {
     </footer>
   );
 };
+*/

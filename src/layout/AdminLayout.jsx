@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+/*import React, { useEffect } from "react";
 import { Outlet, useNavigate } from "react-router-dom";
 import { axiosInstance } from "../config/axiosInstance";
 import { useDispatch, useSelector } from "react-redux";
@@ -41,3 +41,4 @@ export const AdminLayout = () => {
     </div>
   );
 };
+*/

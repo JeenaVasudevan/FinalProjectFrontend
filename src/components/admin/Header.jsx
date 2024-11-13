@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+/*import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { FaHome, FaUser, FaBars, FaTimes, FaSignOutAlt } from 'react-icons/fa';
 import { DarkMode } from "../shared/DarkMode";  // Assuming you have a DarkMode component
@@ -26,12 +26,9 @@ export const Header = () => {
 
   return (
     <header className="bg-gray-800 text-white px-6 py-4 flex items-center justify-between shadow-lg">
-      {/* Logo */}
       <Link to="/" className="text-2xl font-bold text-yellow-400">
         Zestora
       </Link>
-
-      {/* Desktop Navigation */}
       <nav className="hidden md:flex space-x-8 items-center">
         <Link to="/" className="hover:text-yellow-400 flex items-center">
           <FaHome className="mr-2" /> Home
@@ -46,8 +43,6 @@ export const Header = () => {
           About
         </Link>
       </nav>
-
-      {/* Mobile Menu Icon (Hamburger) */}
       <button
         onClick={toggleMobileMenu}
         className="md:hidden text-white focus:outline-none"
@@ -55,8 +50,6 @@ export const Header = () => {
       >
         {isMobileMenuOpen ? <FaTimes /> : <FaBars />}
       </button>
-
-      {/* Mobile Navigation Menu */}
       {isMobileMenuOpen && (
         <div className="md:hidden absolute top-16 left-0 w-full bg-gray-800 text-white py-4 space-y-4 px-6 z-10">
           <Link to="/" onClick={toggleMobileMenu} className="block hover:text-yellow-400">
@@ -71,8 +64,6 @@ export const Header = () => {
           <Link to="/about" onClick={toggleMobileMenu} className="block hover:text-yellow-400">
             About
           </Link>
-
-          {/* Mobile Login/Signup */}
           {!isLoggedIn ? (
             <>
               <Link
@@ -100,10 +91,8 @@ export const Header = () => {
           )}
         </div>
       )}
-
-      {/* Desktop Login/Signup or Profile */}
       <div className="hidden md:flex items-center space-x-4">
-        <DarkMode /> {/* Dark Mode toggle */}
+        <DarkMode />
         {!isLoggedIn ? (
           <>
             <Link
@@ -135,4 +124,4 @@ export const Header = () => {
       </div>
     </header>
   );
-};
+};*/
