@@ -114,7 +114,7 @@ export const router = createBrowserRouter([
           path:"/admin/login",
           element:<AdminLogin />
         },
-        {
+        /*{
           path:"/admin",
           element: <ProtectRoute />,
           children:[
@@ -131,7 +131,7 @@ export const router = createBrowserRouter([
               element:<AdminProfile />
             },
           ]
-        },
+        },*/
       ]
     },
   ]

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+/*import React, { useEffect, useState } from "react";
 import { useFetch } from "../../hooks/useFetch";
 import { useNavigate } from "react-router-dom";
 
@@ -33,11 +33,8 @@ export const AdminProfile = () => {
 
   return (
     <div className="max-w-4xl mx-auto p-6">
-      {/* Profile Card */}
       <div className="bg-white p-8 rounded-lg shadow-lg">
         <h1 className="text-3xl font-bold text-center mb-6">Admin Profile</h1>
-
-        {/* Profile Image */}
         <div className="flex justify-center mb-6">
           <img
             src={profile.profilePic || "https://media.istockphoto.com/id/1130884625/vector/user-member-vector-icon-for-ui-user-interface-or-profile-face-avatar-app-in-circle-design.jpg?s=612x612&w=0&k=20&c=1ky-gNHiS2iyLsUPQkxAtPBWH1BZt0PKBB1WBtxQJRE="}
@@ -45,8 +42,6 @@ export const AdminProfile = () => {
             className="rounded-full w-32 h-32 object-cover border-4 border-gray-300"
           />
         </div>
-
-        {/* Profile Information */}
         <div className="space-y-4">
           <div className="flex justify-between items-center">
             <strong className="text-xl">Name:</strong>
@@ -61,8 +56,6 @@ export const AdminProfile = () => {
             <p className="text-lg">{profile.mobile}</p>
           </div>
         </div>
-
-        {/* Admin Actions */}
         <div className="mt-6 text-center">
           <button
             onClick={handleEditFood}
@@ -81,3 +74,4 @@ export const AdminProfile = () => {
     </div>
   );
 };
+*/

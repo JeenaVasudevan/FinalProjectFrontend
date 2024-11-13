@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+/*import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { axiosInstance } from '../../config/axiosInstance';
 
@@ -96,7 +96,6 @@ export const EditMenu = () => {
                 onChange={handleChange} 
                 className='border p-2 rounded w-full mb-2' 
             />
-            {/* File input for image */}
             <input 
                 type='file' 
                 accept='image/*' 
@@ -140,4 +139,4 @@ export const EditMenu = () => {
         </div>
     );
 };
-
+*/
