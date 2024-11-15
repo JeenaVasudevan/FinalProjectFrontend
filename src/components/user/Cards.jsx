@@ -7,7 +7,7 @@ export const RestaurantCard = ({ restaurant }) => {
         <div className="bg-gray-200 rounded-lg shadow-md overflow-hidden w-80 mx-auto transition-transform duration-200 hover:scale-105 hover:shadow-lg">
             <figure>
                 <img
-                    src={restaurant?.image || "https://www.restolacuisine.com/restaurants/restaurant-la-cuisine/website/images/Lacuisine_resto.jpg"}
+                    src={restaurant?.image || "https://plus.unsplash.com/premium_photo-1661953124283-76d0a8436b87?q=80&w=2976&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"}
                     alt={restaurant?.name}
                     className="w-full h-48 object-cover"
                 />

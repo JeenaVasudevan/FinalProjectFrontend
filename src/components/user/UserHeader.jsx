@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { FaUser, FaShoppingCart, FaSignOutAlt, FaBars, FaTimes, FaClipboardList } from 'react-icons/fa';
 import { DarkMode } from "../shared/DarkMode";  // Assuming you have a DarkMode component
+import { axiosInstance } from '../../config/axiosInstance';
+import toast from 'react-hot-toast';
 
 export const UserHeader = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -15,11 +17,18 @@ export const UserHeader = () => {
   }, [localStorage.getItem('token')]);  // Add `localStorage.getItem('token')` to trigger re-render
 
   // Handle logout
-  const handleLogout = () => {
-    localStorage.removeItem('token');
-    setIsLoggedIn(false);  // Set logged in state to false on logout
-    navigate('/');
-  };
+ const handleLogout=async()=>{
+  try{
+    await axiosInstance.post("/user/logout")
+    localStorage.removeItem("token")
+    navigate("/login")
+    toast.success("Logged out successfully")
+  }
+  catch(error){
+    console.error("Logout error:", error);
+    toast.error("Failed to log out. Please try again.");
+  }
+ }
 
   // Toggle mobile menu
   const toggleMobileMenu = () => {

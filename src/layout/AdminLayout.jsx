@@ -1,27 +1,28 @@
-/*import React, { useEffect } from "react";
+import React, { useEffect } from "react";
 import { Outlet, useNavigate } from "react-router-dom";
-import { axiosInstance } from "../config/axiosInstance";
 import { useDispatch, useSelector } from "react-redux";
 import { AdminHeader } from "../components/admin/AdminHeader";
 import { Header } from "../components/admin/Header";
 import { Footer } from "../components/admin/Footer";
+import { axiosInstance } from "../config/axiosInstance";
+import { clearAdmin, saveAdmin } from "../redux/features/adminSlice";
 
 export const AdminLayout = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { adminAuthorized } = useSelector((state) => state.admin); // Access the admin state from the Redux store
+  const { adminAuthorized } = useSelector((state) => state.admin);
 
   const checkAdmin = async () => {
     try {
       const token = localStorage.getItem("token");
       if (!token) throw new Error("No token found");
 
-      const response = await axiosInstance.get("/admin/check-admin"); // Admin authentication check endpoint
-      dispatch(saveAdmin(response?.data?.data)); // Save admin data to Redux store
+      const response = await axiosInstance.get("/admin/check-admin");
+      dispatch(saveAdmin(response?.data?.data));
     } catch (error) {
       console.error(error?.response?.data, "===error");
-      dispatch(clearAdmin()); // Clear admin data if an error occurs (e.g., invalid token)
-      navigate("/admin/login"); // Redirect to admin login page
+      dispatch(clearAdmin());
+      navigate("/admin/login");
     }
   };
 
@@ -31,7 +32,7 @@ export const AdminLayout = () => {
 
   return (
     <div className="">
-      {adminAuthorized ? <AdminHeader /> : <Header />} 
+      {adminAuthorized ? <AdminHeader /> : <Header /> }
       
       <div className="min-h-96 px-24 py-14">
         <Outlet />
@@ -41,4 +42,3 @@ export const AdminLayout = () => {
     </div>
   );
 };
-*/
