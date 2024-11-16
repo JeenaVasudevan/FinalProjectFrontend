@@ -4,7 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import toast from "react-hot-toast";
 import { axiosInstance } from "../../config/axiosInstance";
-import { saveUser } from "../../redux/features/userSlice.js";
+import { saveUser  } from "../../redux/features/userSlice.js";
 
 export const AdminLoginPage = () => {
   const { register, handleSubmit } = useForm();
@@ -22,7 +22,7 @@ export const AdminLoginPage = () => {
     if (token) {
       navigate(adminRoutes.profile_route); // Redirect if token is found
     }
-  }, []); // Empty dependency array ensures this runs only once on mount
+  }, [navigate]); // Add navigate to dependencies
 
   const onSubmit = async (data) => {
     try {
@@ -33,10 +33,10 @@ export const AdminLoginPage = () => {
         toast.success("Login successful!");
 
         // Optionally, dispatch user data to Redux
-        // dispatch(saveUser(response.data.user));
+        // dispatch(saveUser (response.data.user));
 
         // Redirect to profile page
-        navigate(response.data.redirectUrl); 
+        navigate(response.data.redirectUrl);
       } else {
         throw new Error("Invalid login response");
       }
@@ -56,8 +56,7 @@ export const AdminLoginPage = () => {
             <input
               type="email"
               id="email"
-              {...register("email")}
-              required
+              {...register("email", { required: true })}
               placeholder="Enter your email"
               className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-gray-700 focus:border-gray-700"
             />
@@ -67,8 +66,7 @@ export const AdminLoginPage = () => {
             <input
               type="password"
               id="password"
-              {...register("password")}
-              required
+              {...register("password", { required: true })}
               placeholder="Enter your password"
               className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-gray-700 focus:border-gray-700"
             />
@@ -77,7 +75,10 @@ export const AdminLoginPage = () => {
             <Link to={adminRoutes.signup_route} className="text-gray-700 hover:underline">New Admin? Sign up</Link>
           </div>
           <div className="form-group mt-6">
-            <button type="submit" className="w-full py-3 bg-gray-700 text-white font-semibold rounded-md hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-gray-600">
+            <button
+              type="submit"
+              className="w-full py-3 bg-gray-700 text-white font-semibold rounded-md hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-gray-600"
+            >
               Login
             </button>
           </div>

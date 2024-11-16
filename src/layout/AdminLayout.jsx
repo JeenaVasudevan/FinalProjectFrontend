@@ -28,11 +28,11 @@ export const AdminLayout = () => {
 
   useEffect(() => {
     checkAdmin(); 
-  }, []);
+  }, [dispatch, navigate]); // Add dispatch and navigate to dependencies
 
   return (
     <div className="">
-      {adminAuthorized ? <AdminHeader /> : <Header /> }
+      {adminAuthorized ? <AdminHeader /> : <Header />}
       
       <div className="min-h-96 px-24 py-14">
         <Outlet />
