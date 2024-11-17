@@ -1,15 +1,21 @@
 import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
-import { Link, useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import toast from "react-hot-toast";
 import { axiosInstance } from "../../config/axiosInstance";
-import { saveUser  } from "../../redux/features/userSlice.js";
+
+// Utility function for redirecting if already logged in
+const redirectIfLoggedIn = (navigate, location, adminRoutes) => {
+  const token = localStorage.getItem("token");
+  if (token && location.pathname !== adminRoutes.profile_route) {
+    navigate(adminRoutes.profile_route, { replace: true });
+  }
+};
 
 export const AdminLoginPage = () => {
   const { register, handleSubmit } = useForm();
   const navigate = useNavigate();
-  const dispatch = useDispatch();
+  const location = useLocation();
 
   const adminRoutes = {
     login_api: "/admin/login",
@@ -17,31 +23,28 @@ export const AdminLoginPage = () => {
     signup_route: "/admin/signup",
   };
 
+  // Redirect if already logged in
   useEffect(() => {
-    const token = localStorage.getItem("token");
-    if (token) {
-      navigate(adminRoutes.profile_route); // Redirect if token is found
-    }
-  }, [navigate]); // Add navigate to dependencies
+    redirectIfLoggedIn(navigate, location, adminRoutes);
+  }, [navigate, location.pathname, adminRoutes]);
 
+  // Submit login form
   const onSubmit = async (data) => {
     try {
       const response = await axiosInstance.post(adminRoutes.login_api, data);
 
-      if (response.status === 200 && response.data.token && response.data.redirectUrl) {
+      if (response.status === 200 && response.data.token) {
         localStorage.setItem("token", response.data.token);
         toast.success("Login successful!");
-
-        // Optionally, dispatch user data to Redux
-        // dispatch(saveUser (response.data.user));
-
-        // Redirect to profile page
-        navigate(response.data.redirectUrl);
+        const redirectUrl = response.data.redirectUrl || adminRoutes.profile_route;
+        navigate(redirectUrl, { replace: true });
       } else {
-        throw new Error("Invalid login response");
+        throw new Error("Invalid login response: Missing token");
       }
     } catch (error) {
-      toast.error("Login failed. Please check your credentials.");
+      toast.error(
+        error.response?.data?.message || "Login failed. Please check your credentials."
+      );
       console.error("Login error:", error);
     }
   };
@@ -72,7 +75,9 @@ export const AdminLoginPage = () => {
             />
           </div>
           <div className="text-sm text-right">
-            <Link to={adminRoutes.signup_route} className="text-gray-700 hover:underline">New Admin? Sign up</Link>
+            <Link to={adminRoutes.signup_route} className="text-gray-700 hover:underline">
+              New Admin? Sign up
+            </Link>
           </div>
           <div className="form-group mt-6">
             <button
