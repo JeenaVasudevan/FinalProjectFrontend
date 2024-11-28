@@ -4,7 +4,7 @@ import toast from "react-hot-toast";
 import { axiosInstance } from "../../config/axiosInstance";
 
 export const MenuItem = () => {
-    const { id: menuId } = useParams();
+    const { menuId } = useParams();
     const [isLoading, setIsLoading] = useState(true);
     const [menuDetails, setMenuDetails] = useState(null);
     const [error, setError] = useState(null);
@@ -12,6 +12,12 @@ export const MenuItem = () => {
 
     useEffect(() => {
         const fetchMenuDetails = async () => {
+            if (!menuId) {
+                setError("Invalid menu ID in URL");
+                setIsLoading(false);
+                return;
+            }
+
             try {
                 const response = await axiosInstance.get(`/menuItems/menuDetails/${menuId}`);
                 if (response.data.success) {
@@ -26,14 +32,19 @@ export const MenuItem = () => {
             }
         };
 
-        if (menuId) fetchMenuDetails();
+        fetchMenuDetails();
     }, [menuId]);
 
     const handleAddToCart = async () => {
+        if (!menuDetails) {
+            toast.error("Menu details are not loaded yet");
+            return;
+        }
+
         try {
             const response = await axiosInstance.post("/cart/add", {
-                menuItem: menuDetails._id, // Pass the menuItem ID
-                quantity: quantity,        // Pass the selected quantity
+                menuItem: menuDetails._id,
+                quantity: quantity,    
             });
 
             if (response.data.success) {
