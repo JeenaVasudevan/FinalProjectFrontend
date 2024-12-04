@@ -11,25 +11,23 @@ export const SignupPage = () => {
   const [isAdmin, setIsAdmin] = useState(false);  // State to switch between user/admin signup
 
   const onSubmit = async (data) => {
-    // Add role if admin signup
-    if (isAdmin) {
-      data.role = 'admin';
-    }
-
+    const endpoint = isAdmin ? '/admin/signup' : '/user/signup';
+  
     try {
-      const response = await axiosInstance.post('/user/signup', data);
-
+      const response = await axiosInstance.post(endpoint, data);
+  
       if (response.data.success) {
         toast.success('Signup successful!');
-        navigate('/login'); 
+        navigate(isAdmin ? '/admin/login' : '/login');
       } else {
         toast.error(response.data.message || 'Signup failed! Please try again.');
       }
     } catch (error) {
-      console.log(error, '====error');
+      console.error('Error during signup:', error);
       toast.error('Signup failed! Please try again.');
     }
   };
+  
 
   return (
     <div className="hero bg-base-200 min-h-screen">
