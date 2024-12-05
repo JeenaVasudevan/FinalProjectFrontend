@@ -12,9 +12,9 @@ export const UserLoginPage = () => {
   const dispatch = useDispatch();
 
   const userRoutes = {
-    login_api: "/user/login",
-    profile_route: "/user/profile",
-    signup_route: "/signup",
+    login_api: `/user/login`,
+    profile_route: `/user/profile`,
+    signup_route: `/signup`,
   };
 
   const onSubmit = async (data) => {

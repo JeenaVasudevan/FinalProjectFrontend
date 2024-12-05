@@ -25,7 +25,7 @@ const PaymentCheckout = () => {
     setLoading(true);
     try {
       const paymentResponse = await axiosInstance.post(
-        "/payment/create-checkout-session",
+        `/payment/create-checkout-session`,
         { cart }
       );
       const { sessionId } = paymentResponse.data;

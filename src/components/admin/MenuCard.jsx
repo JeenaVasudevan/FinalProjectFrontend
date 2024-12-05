@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { axiosInstance } from "../../config/axiosInstance";
 import toast from "react-hot-toast";
-import { useFetch } from "../../hooks/useFetch"; // Assuming this hook is implemented correctly
+import { useFetch } from "../../hooks/useFetch";
 
 export const AdminMenuCard = ({ menu, onUpdateMenuItems }) => {
   const [showCreateForm, setShowCreateForm] = useState(false);
