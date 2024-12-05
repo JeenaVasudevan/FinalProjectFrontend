@@ -3,7 +3,6 @@ import { useNavigate } from 'react-router-dom';
 import { axiosInstance } from '../../config/axiosInstance';
 import toast from 'react-hot-toast';
 
-
 export const AdminRestaurantCard = ({ restaurant, onUpdateRestaurants }) => {
     const navigate = useNavigate();
     const [showCreateForm, setShowCreateForm] = useState(false);
@@ -13,32 +12,12 @@ export const AdminRestaurantCard = ({ restaurant, onUpdateRestaurants }) => {
         address: restaurant?.address || '',
         contactNumber: restaurant?.contactNumber || '',
         cuisine: restaurant?.cuisine || '',
-        image: restaurant?.image || ''
+        image: restaurant?.image || '',
+        rating: restaurant?.rating || '',
     });
 
-    const handleCreateClick = () => setShowCreateForm(true);
-
-    const handleUpdateClick = () => {
-        setShowEditForm(true);
-        setFormData({
-            name: restaurant.name,
-            address: restaurant.address,
-            contactNumber: restaurant.contactNumber,
-            cuisine: restaurant.cuisine,
-            image: restaurant.image
-        });
-    };
-
-    const handleDeleteClick = async () => {
-        try {
-            await axiosInstance.delete(`/restaurant/delete/${restaurant._id}`);
-            toast.success('Restaurant deleted successfully!'); // Toast on delete success
-            onUpdateRestaurants(restaurant._id); // Update parent list on delete
-        } catch (error) {
-            console.error('Error deleting restaurant:', error);
-        }
-    };
-
+    const toggleCreateForm = () => setShowCreateForm((prev) => !prev);
+    const toggleEditForm = () => setShowEditForm((prev) => !prev);
     const handleInputChange = (e) => {
         const { name, value } = e.target;
         setFormData((prev) => ({ ...prev, [name]: value }));
@@ -49,12 +28,13 @@ export const AdminRestaurantCard = ({ restaurant, onUpdateRestaurants }) => {
         try {
             const response = await axiosInstance.post('/restaurant/create', formData);
             if (response.data.success) {
-                toast.success('Restaurant created successfully!'); // Toast on create success
-                onUpdateRestaurants(response.data.data); // Pass new restaurant to parent
-                setShowCreateForm(false); // Hide form on successful creation
+                toast.success('Restaurant created successfully!');
+                onUpdateRestaurants(response.data.data);
+                toggleCreateForm();
             }
         } catch (error) {
             console.error('Error creating restaurant:', error);
+            toast.error('Failed to create restaurant.');
         }
     };
 
@@ -63,17 +43,30 @@ export const AdminRestaurantCard = ({ restaurant, onUpdateRestaurants }) => {
         try {
             const response = await axiosInstance.put(`/restaurant/update/${restaurant._id}`, formData);
             if (response.data.success) {
-                toast.success('Restaurant updated successfully!'); // Toast on update success
-                onUpdateRestaurants(response.data.data); // Pass updated restaurant to parent
-                setShowEditForm(false); // Hide form on successful edit
+                toast.success('Restaurant updated successfully!');
+                onUpdateRestaurants(response.data.data);
+                toggleEditForm();
             }
         } catch (error) {
             console.error('Error updating restaurant:', error);
+            toast.error('Failed to update restaurant.');
+        }
+    };
+
+    const handleDeleteClick = async () => {
+        try {
+            await axiosInstance.delete(`/restaurant/delete/${restaurant._id}`);
+            toast.success('Restaurant deleted successfully!');
+            onUpdateRestaurants(restaurant._id);
+        } catch (error) {
+            console.error('Error deleting restaurant:', error);
+            toast.error('Failed to delete restaurant.');
         }
     };
 
     return (
         <div className="bg-gray-200 rounded-lg shadow-md overflow-hidden w-80 mx-auto transition-transform duration-200 hover:scale-105 hover:shadow-lg">
+            {/* Restaurant Card */}
             <figure>
                 <img
                     src={restaurant?.image || "https://plus.unsplash.com/premium_photo-1661953124283-76d0a8436b87?q=80&w=2976&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"}
@@ -84,35 +77,25 @@ export const AdminRestaurantCard = ({ restaurant, onUpdateRestaurants }) => {
             <div className="p-5">
                 <h2 className="text-2xl font-semibold text-gray-800">{restaurant?.name}</h2>
                 <p className="text-gray-600 mt-1">Cuisine: {restaurant?.cuisine}</p>
-                <div className="flex items-center mt-2">
-                    <span className="text-yellow-400">
-                        {'★'.repeat(Math.floor(restaurant?.rating || 5))}
-                        <span className="text-gray-400">
-                            {'★'.repeat(5 - Math.floor(restaurant?.rating || 5))}
-                        </span>
-                    </span>
-                    <span className="ml-2 text-gray-600 text-sm">
-                        {restaurant?.rating?.toFixed(1)}
-                    </span>
-                </div>
+                <p className="text-gray-600 mt-1">Contact: {restaurant?.contactNumber}</p>
+                <p className="text-gray-600 mt-1">Rating: {restaurant?.rating || 'N/A'}</p>
+                <p className="text-gray-600 mt-1">{restaurant?.address}</p>
                 <div className="mt-4 flex justify-between space-x-2">
                     <button
-                        onClick={handleCreateClick}
-                        className="bg-green-500 text-white px-3 py-1 rounded-md hover:bg-green-600 transition duration-200"
+                        onClick={toggleCreateForm}
+                        className="bg-green-500 text-white px-3 py-1 rounded-md hover:bg-green-600"
                     >
                         Create
                     </button>
-
                     <button
-                        onClick={handleUpdateClick}
-                        className="bg-yellow-500 text-white px-3 py-1 rounded-md hover:bg-yellow-600 transition duration-200"
+                        onClick={toggleEditForm}
+                        className="bg-yellow-500 text-white px-3 py-1 rounded-md hover:bg-yellow-600"
                     >
                         Update
                     </button>
-
                     <button
                         onClick={handleDeleteClick}
-                        className="bg-red-500 text-white px-3 py-1 rounded-md hover:bg-red-600 transition duration-200"
+                        className="bg-red-500 text-white px-3 py-1 rounded-md hover:bg-red-600"
                     >
                         Delete
                     </button>
@@ -128,7 +111,7 @@ export const AdminRestaurantCard = ({ restaurant, onUpdateRestaurants }) => {
                         <button type="submit" className="bg-green-500 text-white px-3 py-1 rounded-md hover:bg-green-600">
                             Save
                         </button>
-                        <button onClick={() => setShowCreateForm(false)} className="bg-gray-500 text-white px-3 py-1 rounded-md hover:bg-gray-600">
+                        <button type="button" onClick={toggleCreateForm} className="bg-gray-500 text-white px-3 py-1 rounded-md hover:bg-gray-600">
                             Cancel
                         </button>
                     </div>
@@ -144,7 +127,7 @@ export const AdminRestaurantCard = ({ restaurant, onUpdateRestaurants }) => {
                         <button type="submit" className="bg-yellow-500 text-white px-3 py-1 rounded-md hover:bg-yellow-600">
                             Update
                         </button>
-                        <button onClick={() => setShowEditForm(false)} className="bg-gray-500 text-white px-3 py-1 rounded-md hover:bg-gray-600">
+                        <button type="button" onClick={toggleEditForm} className="bg-gray-500 text-white px-3 py-1 rounded-md hover:bg-gray-600">
                             Cancel
                         </button>
                     </div>
@@ -198,6 +181,17 @@ export const AdminRestaurantCard = ({ restaurant, onUpdateRestaurants }) => {
                     value={formData.image}
                     onChange={handleInputChange}
                     placeholder="Image URL"
+                    required
+                    className="mb-2 w-full p-2 border rounded-md"
+                />
+                <input
+                    type="number"
+                    name="rating"
+                    value={formData.rating}
+                    onChange={handleInputChange}
+                    placeholder="Rating (1-5)"
+                    min="1"
+                    max="5"
                     required
                     className="mb-2 w-full p-2 border rounded-md"
                 />

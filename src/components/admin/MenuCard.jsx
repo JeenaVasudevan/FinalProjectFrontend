@@ -1,10 +1,9 @@
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useState, useEffect } from "react";
 import { axiosInstance } from "../../config/axiosInstance";
 import toast from "react-hot-toast";
+import { useFetch } from "../../hooks/useFetch"; // Assuming this hook is implemented correctly
 
 export const AdminMenuCard = ({ menu, onUpdateMenuItems }) => {
-  const navigate = useNavigate();
   const [showCreateForm, setShowCreateForm] = useState(false);
   const [showEditForm, setShowEditForm] = useState(false);
   const [formData, setFormData] = useState({
@@ -12,35 +11,43 @@ export const AdminMenuCard = ({ menu, onUpdateMenuItems }) => {
     description: menu?.description || '',
     price: menu?.price || '',
     image: menu?.image || '',
-    category: menu?.category || ''
+    category: menu?.category || '',
+    restaurant: menu?.restaurant?._id || '', // Assuming restaurant is an object in menu
   });
 
-  const adminRoutes = {
-    create: "/admin/menu/create",
-    update: `/admin/menu/update/${menu?._id}`,
-    delete: `/admin/menu/delete/${menu?._id}`,
-  };
+  // Fetch restaurants data
+  const { data: restaurants = [], isLoading: loadingRestaurants, error: restaurantError } = useFetch(`/restaurant/all-restaurants`);
+
+  // Log restaurant data for debugging
+  useEffect(() => {
+    console.log('Fetched restaurants:', restaurants);
+  }, [restaurants]);
+
+  // Update form data when menu changes
+  useEffect(() => {
+    if (menu) {
+      setFormData({
+        name: menu.name,
+        description: menu.description,
+        price: menu.price,
+        image: menu.image,
+        category: menu.category,
+        restaurant: menu.restaurant?._id || '', // Set restaurant ID if available
+      });
+    }
+  }, [menu]);
 
   const handleCreateClick = () => setShowCreateForm(true);
-
-  const handleUpdateClick = () => {
-    setShowEditForm(true);
-    setFormData({
-      name: menu.name,
-      description: menu.description,
-      price: menu.price,
-      image: menu.image,
-      category: menu.category
-    });
-  };
+  const handleUpdateClick = () => setShowEditForm(true);
 
   const handleDeleteClick = async () => {
     try {
-      await axiosInstance.delete(`/menu/delete/${menu._id}`);
+      await axiosInstance.delete(`/menuItems/delete/${menu?._id}`);
       toast.success('Menu item deleted successfully!');
-      onUpdateMenuItems(menu._id); // Update parent list on delete
+      onUpdateMenuItems(menu._id);
     } catch (error) {
       console.error('Error deleting menu item:', error);
+      toast.error('Failed to delete menu item');
     }
   };
 
@@ -52,28 +59,30 @@ export const AdminMenuCard = ({ menu, onUpdateMenuItems }) => {
   const handleSubmitCreate = async (e) => {
     e.preventDefault();
     try {
-      const response = await axiosInstance.post('/menu/create', formData);
+      const response = await axiosInstance.post(`/menuItems/create`, formData);
       if (response.data.success) {
         toast.success('Menu item created successfully!');
-        onUpdateMenuItems(response.data.data); // Pass new menu item to parent
-        setShowCreateForm(false); // Hide form on successful creation
+        onUpdateMenuItems(response.data.data);
+        setShowCreateForm(false);
       }
     } catch (error) {
       console.error('Error creating menu item:', error);
+      toast.error('Failed to create menu item');
     }
   };
 
   const handleSubmitEdit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axiosInstance.put(`/menu/update/${menu._id}`, formData);
+      const response = await axiosInstance.put(`/menuItems/update/${menu?._id}`, formData);
       if (response.data.success) {
         toast.success('Menu item updated successfully!');
-        onUpdateMenuItems(response.data.data); // Pass updated menu item to parent
-        setShowEditForm(false); // Hide form on successful edit
+        onUpdateMenuItems(response.data.data);
+        setShowEditForm(false);
       }
     } catch (error) {
       console.error('Error updating menu item:', error);
+      toast.error('Failed to update menu item');
     }
   };
 
@@ -91,6 +100,7 @@ export const AdminMenuCard = ({ menu, onUpdateMenuItems }) => {
         <p className="text-gray-600 mt-1">Category: {menu?.category}</p>
         <p className="text-gray-600 mt-1">{menu?.description}</p>
         <p className="text-gray-600 mt-1">Price: ${menu?.price?.toFixed(2)}</p>
+        <p className="text-gray-600 mt-1">Restaurant: {menu?.restaurant?.name}</p>
         <div className="mt-4 flex justify-between space-x-2">
           <button
             onClick={handleCreateClick}
@@ -181,6 +191,14 @@ export const AdminMenuCard = ({ menu, onUpdateMenuItems }) => {
         />
         <input
           type="text"
+          name="image"
+          value={formData.image}
+          onChange={handleInputChange}
+          placeholder="Image URL"
+          className="mb-2 w-full p-2 border rounded-md"
+        />
+        <input
+          type="text"
           name="category"
           value={formData.category}
           onChange={handleInputChange}
@@ -188,15 +206,28 @@ export const AdminMenuCard = ({ menu, onUpdateMenuItems }) => {
           required
           className="mb-2 w-full p-2 border rounded-md"
         />
-        <input
-          type="text"
-          name="image"
-          value={formData.image}
-          onChange={handleInputChange}
-          placeholder="Image URL"
-          required
-          className="mb-2 w-full p-2 border rounded-md"
-        />
+        {/* Restaurant Dropdown */}
+<select
+  name="restaurant"
+  value={formData.restaurant}
+  onChange={handleInputChange}
+  required
+  className="mb-2 w-full p-2 border rounded-md"
+>
+  <option value="" disabled>Select Restaurant</option>
+  {loadingRestaurants ? (
+    <option disabled>Loading restaurants...</option> // Disable this option to prevent selecting it
+  ) : restaurantError ? (
+    <option disabled>Error loading restaurants</option> // Disable this option to prevent selecting it
+  ) : (
+    restaurants?.map((restaurant) => (
+      <option key={restaurant._id} value={restaurant._id}>
+        {restaurant.name}
+      </option>
+    ))
+  )}
+</select>
+
       </>
     );
   }
