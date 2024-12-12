@@ -44,6 +44,8 @@ export const router = createBrowserRouter(
         { path: "/menu", element: <Menu /> },
         { path: "/restaurant/:id", element: <RestaurantDetails /> },
         { path: "/menu/:menuId", element: <MenuItem /> },
+        { path: "/payment/success",element: <PaymentSuccess />},
+        { path: "/payment/cancel",element: <PaymentCancel />},
       
 
         // Protected user routes
@@ -57,8 +59,6 @@ export const router = createBrowserRouter(
             { path: "address", element: <AddressPage /> },
             { path: "cart", element: <Cart /> },
             { path: "payment",element: <PaymentCheckout />},
-            { path: "payment/success",element: <PaymentSuccess />},
-            { path: "payment/cancel",element: <PaymentCancel />},
             { path: "review", element: <Review /> },
           ],
         },
