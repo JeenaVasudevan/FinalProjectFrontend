@@ -12,13 +12,11 @@ export const AdminMenuCard = ({ menu, onUpdateMenuItems }) => {
     price: menu?.price || '',
     image: menu?.image || '',
     category: menu?.category || '',
-    restaurant: menu?.restaurant?._id || '', // Assuming restaurant is an object in menu
+    restaurant: menu?.restaurant?._id || '',
   });
 
   // Fetch restaurants data
   const { data: restaurants = [], isLoading: loadingRestaurants, error: restaurantError } = useFetch(`/restaurant/all-restaurants`);
-
-  // Log restaurant data for debugging
   useEffect(() => {
     console.log('Fetched restaurants:', restaurants);
   }, [restaurants]);
@@ -32,7 +30,7 @@ export const AdminMenuCard = ({ menu, onUpdateMenuItems }) => {
         price: menu.price,
         image: menu.image,
         category: menu.category,
-        restaurant: menu.restaurant?._id || '', // Set restaurant ID if available
+        restaurant: menu.restaurant?._id || '',
       });
     }
   }, [menu]);
