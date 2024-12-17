@@ -18,7 +18,6 @@ import { UserLoginPage } from "../pages/user/UserLoginPage";
 import { AdminLoginPage } from "../pages/admin/AdminLoginPage";
 import { EditRestaurant } from "../pages/admin/EditRestaurant";
 import { EditMenu } from "../pages/admin/EditMenu";
-import { OrderDetails } from "../pages/user/OrderDetails";
 import Cart from "../pages/user/Cart";
 import PaymentCheckout from "../pages/user/PaymentCheckout";
 import AddressPage from "../pages/user/AddressPage";
@@ -55,7 +54,6 @@ export const router = createBrowserRouter(
           children: [
             { path: "profile", element: <ProfilePage /> },
             { path: "orders", element: <Orders /> },
-            { path: "orderDetails/:id", element: <OrderDetails /> },
             { path: "address", element: <AddressPage /> },
             { path: "cart", element: <Cart /> },
             { path: "payment",element: <PaymentCheckout />},

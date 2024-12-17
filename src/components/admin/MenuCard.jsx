@@ -47,7 +47,6 @@ export const AdminMenuCard = ({ menu, onUpdateMenuItems }) => {
       onUpdateMenuItems(menu._id);
     } catch (error) {
       console.error('Error deleting menu item:', error);
-      toast.error('Failed to delete menu item');
     }
   };
 
@@ -67,7 +66,6 @@ export const AdminMenuCard = ({ menu, onUpdateMenuItems }) => {
       }
     } catch (error) {
       console.error('Error creating menu item:', error);
-      toast.error('Failed to create menu item');
     }
   };
 
@@ -216,9 +214,9 @@ export const AdminMenuCard = ({ menu, onUpdateMenuItems }) => {
 >
   <option value="" disabled>Select Restaurant</option>
   {loadingRestaurants ? (
-    <option disabled>Loading restaurants...</option> // Disable this option to prevent selecting it
+    <option disabled>Loading restaurants...</option>
   ) : restaurantError ? (
-    <option disabled>Error loading restaurants</option> // Disable this option to prevent selecting it
+    <option disabled>Error loading restaurants</option> 
   ) : (
     restaurants?.map((restaurant) => (
       <option key={restaurant._id} value={restaurant._id}>

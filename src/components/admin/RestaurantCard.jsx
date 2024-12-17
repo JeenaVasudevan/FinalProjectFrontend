@@ -34,7 +34,6 @@ export const AdminRestaurantCard = ({ restaurant, onUpdateRestaurants }) => {
             }
         } catch (error) {
             console.error('Error creating restaurant:', error);
-            toast.error('Failed to create restaurant.');
         }
     };
 
@@ -49,7 +48,6 @@ export const AdminRestaurantCard = ({ restaurant, onUpdateRestaurants }) => {
             }
         } catch (error) {
             console.error('Error updating restaurant:', error);
-            toast.error('Failed to update restaurant.');
         }
     };
 
@@ -60,7 +58,6 @@ export const AdminRestaurantCard = ({ restaurant, onUpdateRestaurants }) => {
             onUpdateRestaurants(restaurant._id);
         } catch (error) {
             console.error('Error deleting restaurant:', error);
-            toast.error('Failed to delete restaurant.');
         }
     };
 
