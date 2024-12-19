@@ -13,13 +13,13 @@ const PaymentCheckout = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  //useEffect(() => {
+  useEffect(() => {
     if (!cart.items || cart.items.length === 0) {
       navigate("/cart", { replace: true }); // Ensure cart has items
     } else if (!address) {
       navigate("/address", { replace: true }); // Redirect to address page if missing
     }
-  //}, [cart, address, navigate]);
+  }, [cart, address, navigate]);
 
   const handlePayment = async () => {
     setLoading(true);

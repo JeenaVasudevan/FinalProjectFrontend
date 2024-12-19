@@ -1,45 +1,47 @@
-import React, { useEffect } from "react";
-import { Outlet, useNavigate } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
+import React, { useEffect, useState } from "react";
+import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import { AdminHeader } from "../components/admin/AdminHeader";
 import { Header } from "../components/admin/Header";
 import { Footer } from "../components/admin/Footer";
 import { axiosInstance } from "../config/axiosInstance";
-import { clearAdmin, saveAdmin } from "../redux/features/adminSlice";
 
-// Utility function for checking admin authorization
-const checkAdminAuthorization = async (dispatch, navigate) => {
-  try {
-    const token = localStorage.getItem("token");
-    if (!token) throw new Error("No token found");
-
-    const response = await axiosInstance.get("/admin/check-admin");
-    dispatch(saveAdmin(response?.data?.data));
-  } catch (error) {
-    dispatch(clearAdmin());
-    if (location.pathname !== "/admin/login") {
-      navigate("/admin/login", { replace: true });
-    }
-  }
-};
-
-// AdminLayout component
 export const AdminLayout = () => {
-  const navigate = useNavigate();
-  const dispatch = useDispatch();
-  const { adminAuthorized } = useSelector((state) => state.admin);
+    const navigate = useNavigate();
+    const location = useLocation();
+    const [isAdminAuthorized, setIsAdminAuthorized] = useState(false);
 
-  //useEffect(() => {
-    checkAdminAuthorization(dispatch, navigate);
-  //}, [dispatch, navigate]); // Minimal dependencies
+    const checkAdminAuthorization = async () => {
+        try {
+            const response = await axiosInstance.get("/admin/check-admin", {
+                withCredentials: true,
+            });
+            const adminData = response?.data?.data;
 
-  return (
-    <div>
-      {adminAuthorized ? <AdminHeader /> : <Header />}
-      <div className="min-h-96 px-24 py-14">
-        <Outlet />
-      </div>
-      <Footer />
-    </div>
-  );
+            if (adminData?.role !== "admin") {
+                throw new Error("Unauthorized access for this role");
+            }
+
+            setIsAdminAuthorized(true);
+        } catch (error) {
+            console.error("Admin Authorization Error:", error);
+            setIsAdminAuthorized(false);
+            if (location.pathname !== "/admin/login") {
+                navigate("/admin/login", { replace: true });
+            }
+        }
+    };
+
+    useEffect(() => {
+        checkAdminAuthorization();
+    }, [location.pathname]);
+
+    return (
+        <div>
+            {isAdminAuthorized ? <AdminHeader /> : <Header />}
+            <div className="min-h-96 px-24 py-14">
+                <Outlet />
+            </div>
+            <Footer />
+        </div>
+    );
 };
